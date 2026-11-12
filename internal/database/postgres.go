@@ -11,15 +11,27 @@ import (
 	"github.com/jackc/pgx/v5"
 )
 
-func Connect(databaseURL string) (*pgx.Conn, error) {
-	ctx := context.Background()
-	conn, err := pgx.Connect(ctx, databaseURL)
-	if err != nil {
-		return nil, fmt.Errorf("Deu ruim")
-	}
+// func Connect(databaseURL string) (*pgx.Conn, error) {
+// 	ctx := context.Background()
+// 	conn, err := pgx.Connect(ctx, databaseURL)
+// 	if err != nil {
+// 		return nil, fmt.Errorf("Deu ruim")
+// 	}
 
-	log.Println("Deu bom")
-	return conn, err
+// 	log.Println("Deu bom")
+// 	return conn, err
+// }
+
+func Connect(databaseURL string) (*pgx.Conn, error) {
+    ctx := context.Background()
+    conn, err := pgx.Connect(ctx, databaseURL)
+    if err != nil {
+        // Retorne o erro real junto para sabermos o que o Postgres está a reclamar
+        return nil, fmt.Errorf("falha ao conectar no postgres: %w", err)
+    }
+
+    log.Println("Deu bom")
+    return conn, nil
 }
 
 func RunMigrations(databaseURL string) error {
